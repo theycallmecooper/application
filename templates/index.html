@@ -3,18 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List Application</title>
+    <title>Login Page</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>To-Do List</h1>
-        <form id="todo-form">
-            <input type="text" id="new-todo" placeholder="Enter a new task">
-            <button type="submit">Add</button>
-        </form>
-        <ul id="todo-list"></ul>
+        <img src="placeholder.jpg" alt="Placeholder Image">
+        <div>
+            <button onclick="location.href='login.html'">Login</button>
+            <button onclick="location.href='signup.html'">Sign Up</button>
+        </div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
