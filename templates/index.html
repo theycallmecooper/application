@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             display: flex;
@@ -13,28 +13,43 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #007bff, #e83e8c);
+            color: white;
         }
         .container {
             text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
         }
         img {
             max-width: 100%;
             height: auto;
+            border-radius: 10px;
         }
-        button {
+        .btn-custom {
             margin: 10px;
             padding: 10px 20px;
             font-size: 16px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #e83e8c;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="placeholder.jpg" alt="Placeholder Image">
+        <img src="placeholder.jpg" alt="Placeholder Image" class="img-fluid">
         <div>
-            <button onclick="location.href='login.html'">Login</button>
-            <button onclick="location.href='signup.html'">Sign Up</button>
+            <button class="btn btn-custom" onclick="location.href='login.html'">Login</button>
+            <button class="btn btn-custom" onclick="location.href='signup.html'">Sign Up</button>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
