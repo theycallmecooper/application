@@ -35,6 +35,8 @@
             background-color: #8b56e1;
             border: none;
             color: white;
+            text-decoration: none;
+            display: inline-block;
         }
         .btn-custom:hover {
             background-color: #45109a;
@@ -46,10 +48,19 @@
     <div class="container">
         <img src="/static/img/todo-logo.png" alt="Logo" class="img-fluid" style="width: 100px; height: auto;">
         <div>
-            <button class="btn btn-custom" onclick="location.href='login.html'">Login</button>
-            <button class="btn btn-custom" onclick="location.href='signup.html'">Sign Up</button>
+            <a class="btn btn-custom" href='/login'>Login</a>
+            <a class="btn btn-custom" href='/signup'>Sign Up</a>
         </div>
     </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container mt-3">
+        {% for category, message in messages %} 
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
