@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, request, flash, session
+from flask import Flask, render_template, request, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
@@ -16,8 +16,21 @@ db_session = Session()
 def index():
     return render_template('index.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if request.method == "POST":
+        #retrieve the form data
+        username = request.form.get('username')
+        password = request.form.get('password')
 
-app.run(debug=True, reloader_type='stat', port=3000)
+    #query the database to find the user with given username
+    user = db_session.query(User).filter_by(username=username).first()
+
+    #check if the user exists and the password is correct
+    if user and user.check_password(password):
+        session['user_id'] = user.id
+        return "User logged in successfully."
+    else:
+        flash("Invalid username or password.")
+        return render_template('login.html')
+app.run(debug=True, reloader_type='stat', port=5000)
