@@ -36,9 +36,22 @@
             background-color: #8b56e1;
             border: none;
             color: white;
-            width: 100%;
+            width: 48%;
         }
         .btn-custom:hover {
+            background-color: #45109a;
+            color: white; /* Ensure text color remains white */
+        }
+        .btn-back {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #8b56e1;
+            border: none;
+            color: white;
+            width: 48%;
+        }
+        .btn-back:hover {
             background-color: #45109a;
             color: white; /* Ensure text color remains white */
         }
@@ -56,7 +69,10 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-custom">Login</button>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-custom">Login</button>
+                <button type="button" class="btn btn-back" onclick="location.href='index.html'">Back to Home</button>
+            </div>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
