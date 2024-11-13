@@ -39,3 +39,26 @@ def login():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    @app.route('/signup', methods=['GET', 'POST'])
+    def signup():
+        if request.method == "POST":
+            #retrieve the form data
+            username = request.form.get('username')
+            password = request.form.get('password')
+
+            #check if the username already exists
+            existing_user = db_session.query(User).filter_by(username=username).first()
+            if existing_user:
+                flash("Username already taken. Please choose a different one.")
+                return redirect(url_for('signup'))
+
+            #create a new user and add to the database
+            new_user = User(username=username)
+            new_user.set_password(password)  # assuming User model has set_password method
+            db_session.add(new_user)
+            db_session.commit()
+
+            flash("User registered successfully. Please log in.", "info")
+            return redirect(url_for('login'))
+        
+        return render_template('signup.html')

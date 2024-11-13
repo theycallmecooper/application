@@ -71,8 +71,16 @@
             </div>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-custom">Login</button>
-                <button type="button" class="btn btn-back" onclick="location.href='index.html'">Back to Home</button>
+                <button type="button" class="btn btn-back" onclick="location.href='/templates/index.html'">Back to Home</button>
             </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %} 
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %} {% endwith %}
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
