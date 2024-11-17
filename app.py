@@ -31,7 +31,7 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.username
             flash("User logged in successfully.", "info")
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
         else:
             flash("Invalid username or password.")
     
@@ -41,7 +41,9 @@ def login():
 def signup():
     return render_template('signup.html')
 
-
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
