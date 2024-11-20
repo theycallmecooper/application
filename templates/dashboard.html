@@ -4,40 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(320deg, #00ddff, #e8e53e);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .nav-link {
+            color: white !important;
+        }
+        .nav-link:hover {
+            color: #8b56e1 !important;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Dashboard</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section>
-            <h2>Welcome to your Dashboard</h2>
-            <p>Here you can find an overview of your activities and statistics.</p>
-        </section>
-        <section>
-            <h3>Recent Activities</h3>
-            <ul>
-                <li>Activity 1</li>
-                <li>Activity 2</li>
-                <li>Activity 3</li>
-            </ul>
-        </section>
-        <section>
-            <h3>Statistics</h3>
-            <p>Some statistics here...</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2023 Your Company</p>
-    </footer>
+    <div class="container">
+        <header class="mb-4">
+            <h1 class="text-center">Dashboard</h1>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section class="mb-4">
+                <h2 class="text-center">Welcome to your Dashboard</h2>
+                <p class="text-center">Here you can find an overview of your activities and statistics.</p>
+            </section>
+            <section class="mb-4">
+                <h3>Recent Activities</h3>
+                <ul class="list-group">
+                    <li class="list-group-item" style="color: black;">Activity 1</li>
+                    <li class="list-group-item" style="color: black;">Activity 2</li>
+                    <li class="list-group-item" style="color: black;">Activity 3</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Statistics</h3>
+                <p>Some statistics here...</p>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2023 Your Company</p>
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
