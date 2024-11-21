@@ -42,9 +42,48 @@
             background-color: #45109a;
             color: white; /* Ensure text color remains white */
         }
+
+        /* Full-screen Post-it note */
+        #post-it {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fffc88;
+            color: #444;
+            font-family: Arial, sans-serif;
+            font-size: 2em;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            animation: lift-off 1.5s ease-out forwards;
+        }
+
+        @keyframes lift-off {
+            0% {
+                transform: translateY(0) rotateX(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-50%) rotateX(30deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120%) rotateX(60deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Full-screen Post-it Note -->
+    <div id="post-it">Welcome!</div>
+
     <div class="container">
         <img src="/static/img/todo-logo.png" alt="Logo" class="img-fluid" style="width: 100px; height: auto;">
         <div>
@@ -56,5 +95,15 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const postIt = document.getElementById("post-it");
+
+            // Remove the post-it note after the animation ends
+            postIt.addEventListener("animationend", () => {
+                postIt.style.display = "none";
+            });
+        });
+    </script>
 </body>
 </html>
