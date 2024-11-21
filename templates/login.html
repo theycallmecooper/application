@@ -55,6 +55,11 @@
             background-color: #45109a;
             color: white; /* Ensure text color remains white */
         }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
     </style>
 </head>
 <body>
@@ -71,16 +76,15 @@
             </div>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-custom"> Login</button>
-                <button type="reset" class="btn btn-custom"> Reset</button>
+                <!-- <button type="reset" class="btn btn-custom"> Reset</button> -->
                 <a class="btn btn-custom" href="{{url_for('index')}}">Back to Home</a>
             </div>
+            <br>
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-            <div class="container mt-3">
-                {% for category, message in messages %} 
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">{{ message }}</div>
+                {% for category, message in messages %}
+                <div class="alert {% if category == 'error' %}alert-danger{% else %}alert-{{ category }}{% endif %} alert-dismissible fade show" role="alert">{{ message }}</div>
                 {% endfor %}
-            </div>
             {% endif %} {% endwith %}
         </form>
     </div>

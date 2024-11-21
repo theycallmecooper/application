@@ -33,7 +33,7 @@ def login():
             flash("User logged in successfully.", "info")
             return redirect(url_for('dashboard'))
         else:
-            flash("Invalid username or password.")
+            flash("Invalid username or password.", "error")
     
     return render_template('login.html')
 
