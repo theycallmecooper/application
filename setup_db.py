@@ -17,6 +17,20 @@ class User(Base):
     def check_password(self, password):
         return check_password_hash(self.password, password)
     
+#Tasks Table 
+class Task(Base):
+    __tablename__ = 'tasks'
+    id = Column(Integer, primary_key=True)
+    description = Column(String, nullable=False)
+    completed = Column(Boolean, default=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    user = relationship('User', back_populates='tasks')
+    
+    # Initialize the SQLite database 
+    engine = create_engine('sqlite:///todo.db')
+    Base.metadata.create_all(engine)
+    print("Database and tables created successfully.") 
+
 #ToDo model
 class ToDo(Base):
     __tablename__ = 'todo'
