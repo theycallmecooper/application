@@ -1,74 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background: linear-gradient(320deg, #00ddff, #e8e53e);
-            color: white;
-        }
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        .nav-link {
-            color: white !important;
-        }
-        .nav-link:hover {
-            color: #8b56e1 !important;
-        }
-        footer {
-            text-align: center;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header class="mb-4">
-            <h1 class="text-center">Dashboard</h1>
-            <nav class="navbar navbar-expand-lg navbar-light">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <section class="mb-4">
-                <h2 class="text-center">Welcome to your Dashboard</h2>
-                <p class="text-center">Here you can find an overview of your activities and statistics.</p>
-            </section>
-            <section class="mb-4">
-                <h3>Recent Activities</h3>
-                <ul class="list-group">
-                    <li class="list-group-item" style="color: black;">Activity 1</li>
-                    <li class="list-group-item" style="color: black;">Activity 2</li>
-                    <li class="list-group-item" style="color: black;">Activity 3</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Statistics</h3>
-                <p>Some statistics here...</p>
-            </section>
-        </main>
-        <footer>
-            <p>&copy; 2024</p>
-        </footer>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style>
+            body {
+                background: linear-gradient(320deg, #00ddff, #e8e53e);
+                color: white;
+            }
+            .container {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 20px;
+                border-radius: 10px;
+                margin-top: 20px;
+            }
+            .nav-link {
+                color: white !important;
+            }
+            .nav-link:hover {
+                color: #8b56e1 !important;
+            }
+            footer {
+                text-align: center;
+                padding: 10px;
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Your To-Do List</h1> 
+        <!-- Form to Add a New To-Do --> 
+        
+        <form action="{{ url_for('add_todo') }}" method="POST">
+            <input type="text" name="task" placeholder="New To-Do" required />
+            <button type="submit">Add</button>
+        </form> 
+        
+        <!-- Display To-Do List --> 
+        <ul>
+            {% for task in tasks %}
+            <li>
+                {{ task.description }} {% if task.completed %}
+                <strong>(Completed)</strong>         
+                {% else %} 
+                <strong>(Pending)</strong>         
+                {% endif %} 
+                <!-- Delete Button --> 
+                <form 
+                    action="{{ url_for('delete_todo', todo_id=task.id) }}" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+</html> 

@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, session, redirect, url
 # from werkzeug.security import check_password_hash
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from setup_db import User #import the user model from the models file.
+from setup_db import User, Task #import the user and task models from the models file.
 
 app = Flask(__name__)
 app.secret_key = '#sigmarizz23#'
@@ -44,6 +44,45 @@ def signup():
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
+
+@app.route('/add_todo', methods=["POST"])
+def add_todo(): 
+    # Ensure the user is logged in
+    if "user_id" not in session:         
+        flash("Please log in to add a to-do.", "warning")
+        return redirect(url_for('login')) 
+
+    # Retrieve task data from the form
+    task_description = request.form.get("task")
+    user_id = session["user_id"]
+
+    # Create a new Task object and save it to the database
+    new_task = Task(description=task_description, user_id=user_id)
+    db_session.add(new_task)
+    db_session.commit()
+
+    flash("To-Do added successfully!", "success")
+    return redirect(url_for('dashboard'))
+
+@app.route('/delete_todo/<int:todo_id>', methods=["POST"])
+def delete_todo(todo_id): 
+    # Ensure the user is logged in 
+    if "user_id" not in session:
+        flash("Please log in to delete a to-do.", "warning") 
+        return redirect(url_for('login')) 
+    
+    # Query the database for the task     
+    task = db_session.query(Task).get(todo_id) 
+    
+    # Ensure the task exists and belongs to the logged-in user 
+    if task and task.user_id == session["user_id"]:
+        db_session.delete(task)
+        db_session.commit()
+        flash("To-Do deleted successfully!", "success")
+    else:
+        flash("To-Do not found or access denied.", "danger")
+    return redirect(url_for('dashboard')) 
+
 
 if __name__ == '__main__':
     app.run(debug=True)
