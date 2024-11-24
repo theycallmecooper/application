@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, sessionmaker
-from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.orm import relationship
+from werkzeug.security import check_password_hash
 
 #Base class for ORM models
 Base = declarative_base()
@@ -24,7 +24,7 @@ class Task(Base):
     description = Column(String, nullable=False)
     completed = Column(Boolean, default=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    user = relationship('User', back_populates='tasks')
+    user = relationship('User', back_populates='todos')
     
 # Initialize the SQLite database 
 engine = create_engine('sqlite:///todo.db')

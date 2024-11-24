@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for
-# from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from setup_db import User, Task #import the user and task models from the models file.
