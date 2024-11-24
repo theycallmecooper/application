@@ -45,3 +45,15 @@ class ToDo(Base):
 engine = create_engine('sqlite:///todo.db')
 Base.metadata.create_all(engine)
 print("Database and tables created successfully.")
+
+
+class User(Base):
+
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String, unique=True, nullable=False)
+
+    password_hash = Column(String, nullable=False)
+
+    todos = relationship('Task', back_populates='user')
