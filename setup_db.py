@@ -26,10 +26,11 @@ class Task(Base):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', back_populates='tasks')
     
-    # Initialize the SQLite database 
-    engine = create_engine('sqlite:///todo.db')
-    Base.metadata.create_all(engine)
-    print("Database and tables created successfully.") 
+# Initialize the SQLite database 
+engine = create_engine('sqlite:///todo.db')
+Base.metadata.create_all(engine)
+
+print("Database and tables created successfully.") 
 
 #ToDo model
 class ToDo(Base):
