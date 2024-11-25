@@ -8,26 +8,48 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(320deg, #00ddff, #e8e53e);
-            color: white;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
         }
+
+        .gradient-background {
+            position: fixed;
+            top: 0;
+            left: -200%; /* Start off-screen */
+            width: 300%; /* Large enough to hold the whole gradient */
+            height: 100%;
+            background: linear-gradient(320deg, #00ddff, #e8e53e, #ff5e5e, #42aaff);
+            background-size: 100% 100%;
+            animation: moveGradient 20s linear infinite; /* Adjust speed with 20s */
+            z-index: -1; /* Ensure it stays in the background */
+        }
+
+        @keyframes moveGradient {
+            from {
+                transform: translateX(0); /* Start at initial position */
+            }
+            to {
+                transform: translateX(200%); /* Move completely across the screen */
+            }
+        }
+
         .container {
             text-align: center;
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
         }
+
         img {
             max-width: 100%;
             height: auto;
             border-radius: 10px;
         }
+
         .btn-custom {
             margin: 10px;
             padding: 10px 20px;
@@ -38,12 +60,12 @@
             text-decoration: none;
             display: inline-block;
         }
+
         .btn-custom:hover {
             background-color: #45109a;
             color: white; /* Ensure text color remains white */
         }
 
-        /* Full-screen Post-it note */
         #post-it {
             position: fixed;
             top: 0;
@@ -81,9 +103,13 @@
     </style>
 </head>
 <body>
+    <!-- Moving Gradient Background -->
+    <div class="gradient-background"></div>
+
     <!-- Full-screen Post-it Note -->
     <div id="post-it">Welcome!</div>
 
+    <!-- Main Content -->
     <div class="container">
         <img src="/static/img/todo-logo.png" alt="Logo" class="img-fluid" style="width: 100px; height: auto;">
         <div>
@@ -92,17 +118,17 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- External JavaScript -->
+    <script src="/static/js/script.js"></script>
     <script>
+        // Remove the post-it note after the animation ends
         document.addEventListener("DOMContentLoaded", () => {
             const postIt = document.getElementById("post-it");
-
-            // Remove the post-it note after the animation ends
-            postIt.addEventListener("animationend", () => {
-                postIt.style.display = "none";
-            });
+            if (postIt) {
+                postIt.addEventListener("animationend", () => {
+                    postIt.style.display = "none";
+                });
+            }
         });
     </script>
 </body>
