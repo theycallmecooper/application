@@ -1,23 +1,23 @@
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
-#Base class for ORM models
 Base = declarative_base()
 
-#User model
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
-    todos = relationship('ToDo', back_populates='user')
+    todos = relationship('Task', back_populates='user')
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
     
-#Tasks Table 
 class Task(Base):
     __tablename__ = 'tasks'
     id = Column(Integer, primary_key=True)
@@ -25,35 +25,14 @@ class Task(Base):
     completed = Column(Boolean, default=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', back_populates='todos')
-    
-# Initialize the SQLite database 
+
 engine = create_engine('sqlite:///todo.db')
 Base.metadata.create_all(engine)
 
-print("Database and tables created successfully.") 
 
-#ToDo model
-class ToDo(Base):
-    __tablename__ = 'todo'
-    id = Column(Integer, primary_key=True)
-    task = Column(String, nullable=False)
-    done = Column(Boolean, default=False)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    user = relationship('User', back_populates='todos')
-
-#Database setup
-engine = create_engine('sqlite:///todo.db')
-Base.metadata.create_all(engine)
-print("Database and tables created successfully.")
-
-
-class User(Base):
-
-    __tablename__ = 'users'
-
-    id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True, nullable=False)
-
-    password_hash = Column(String, nullable=False)
-
-    todos = relationship('Task', back_populates='user')
+    # class Task(Base):
+    #     __tablename__ = 'tasks'
+    #     id = Column(Integer, primary_key=True)
+    #     description = Column(String, nullable=False)
+    #     user_id = Column(Integer, ForeignKey('users.id'))
+    #     user = relationship('User', back_populates='tasks')
