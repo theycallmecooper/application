@@ -23,7 +23,6 @@ class Task(Base):
     id = Column(Integer, primary_key=True)
     description = Column(String, nullable=False)
     completed = Column(Boolean, default=False)
-    due_date = Column(Date, nullable=True)  # New due_date field
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', back_populates='todos')
 
