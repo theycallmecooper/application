@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from setup_db import User, Task  # Use Task model instead of ToDo
+from setup_db import User, Task  # Ensure User and Task models are defined in setup_db
 
 app = Flask(__name__)
 app.secret_key = '#sigmarizz23#'
@@ -22,7 +22,7 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        # Query the database to find the user with given username
+        # Query the database to find the user with the given username
         user = db_session.query(User).filter_by(username=username).first()
 
         # Check if the user exists and the password is correct
@@ -46,7 +46,7 @@ def signup():
         # Check if the username already exists
         existing_user = db_session.query(User).filter_by(username=username).first()
         if existing_user:
-            flash("Username already taken. Please choose a different one.")
+            flash("Username already taken. Please choose a different one.", "warning")
             return redirect(url_for('signup'))
 
         # Create a new user and add to the database
@@ -100,6 +100,17 @@ def delete_todo(todo_id):
     else:
         flash("To-Do not found or access denied.", "danger")
     return redirect(url_for('dashboard'))
+
+# Add favicon route
+@app.route('/favicon.ico')
+def favicon():
+    # Serve favicon directly from the static folder
+    return redirect(url_for('static', filename='img/favicon.ico'))
+
+# Ensure favicon is included in all templates
+@app.context_processor
+def inject_favicon():
+    return dict(favicon_url=url_for('static', filename='img/favicon.ico'))
 
 if __name__ == '__main__':
     app.run(debug=True)
