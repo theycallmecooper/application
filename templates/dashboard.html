@@ -6,40 +6,96 @@
         <title>Dashboard</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <style>
+            html, body {
+                height: 100%; /* Ensure the gradient covers the full height */
+            }
+
             body {
                 background: linear-gradient(320deg, #00ddff, #e8e53e);
                 color: white;
+                font-family: Arial, sans-serif;
+                min-height: 100%; /* Ensure body covers full height */
+                background-size: 100% 100%; /* Fix gradient repetition issue */
             }
+
             .container {
                 background: rgba(255, 255, 255, 0.1);
-                padding: 20px;
+                padding: 30px;
                 border-radius: 10px;
-                margin-top: 20px;
+                margin-top: 40px;
+                box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
             }
+
             .nav-link {
                 color: white !important;
             }
+
             .nav-link:hover {
                 color: #8b56e1 !important;
             }
+
             footer {
                 text-align: center;
                 padding: 10px;
                 background: rgba(0, 0, 0, 0.1);
                 border-radius: 10px;
-                margin-top: 20px;
+                margin-top: 40px;
             }
 
             .list-group-item {
-                color: black;
+                background-color: #f8f9fa;
+                border: 1px solid #ddd;
+                color: #333;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                font-size: 16px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .list-group-item.completed {
+                text-decoration: line-through;
+                background-color: #d4edda;
+                color: #155724;
+            }
+
+            .list-group-item.pending {
+                background-color: #fff3cd;
+                color: #856404;
+            }
+
+            .form-inline {
+                margin-bottom: 20px;
+            }
+
+            .form-control {
+                border-radius: 30px;
+                padding: 10px;
+                width: 300px;
+            }
+
+            .btn-primary {
+                border-radius: 30px;
+                padding: 10px 20px;
+            }
+
+            .btn-danger {
+                border-radius: 20px;
+                padding: 5px 15px;
+            }
+
+            .text-center a {
+                border-radius: 30px;
+                padding: 10px 20px;
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1 class="text-center">Your To-Do List</h1> 
+            <h1 class="text-center mb-4">Your To-Do List</h1> 
             <!-- Form to Add a New To-Do --> 
-            <form action="{{ url_for('add_todo') }}" method="POST" class="form-inline justify-content-center mb-4">
+            <form action="{{ url_for('add_todo') }}" method="POST" class="form-inline justify-content-center">
                 <input type="text" name="task" placeholder="New To-Do" required class="form-control mr-2" />
                 <button type="submit" class="btn btn-primary">Add</button>
             </form> 
@@ -47,15 +103,18 @@
             <!-- Display To-Do List --> 
             <ul class="list-group">
                 {% for task in tasks %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>
-                        {{ task.description }} 
-                        {% if task.completed %}
-                        <strong class="text-success">(Completed)</strong>         
-                        {% else %} 
-                        <strong class="text-warning">(Pending)</strong>         
-                        {% endif %} 
-                    </span>
+                <li class="list-group-item d-flex justify-content-between align-items-center {% if task.completed %}completed{% else %}pending{% endif %}">
+                    <div>
+                        <input type="checkbox" class="task-checkbox" {% if task.completed %}checked{% endif %} data-task-id="{{ task.id }}">
+                        <span class="ml-2">
+                            {{ task.description }} 
+                            {% if task.completed %}
+                            <strong class="text-success">(Completed)</strong>         
+                            {% else %} 
+                            <strong class="text-warning">(Pending)</strong>         
+                            {% endif %} 
+                        </span>
+                    </div>
                     <!-- Delete Button --> 
                     <form action="{{ url_for('delete_todo', todo_id=task.id) }}" method="POST" class="ml-2">
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -67,8 +126,38 @@
                 <a href="{{ url_for('login') }}" class="btn btn-secondary">Logout</a>
             </div>
         </div>
+
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            // Handle checkbox change to mark task as completed
+            $(document).ready(function() {
+                $('.task-checkbox').on('change', function() {
+                    const taskId = $(this).data('task-id');
+                    const isCompleted = $(this).is(':checked');
+                    
+                    // Change the task style based on completion status
+                    if (isCompleted) {
+                        $(this).closest('.list-group-item').addClass('completed').removeClass('pending');
+                    } else {
+                        $(this).closest('.list-group-item').removeClass('completed').addClass('pending');
+                    }
+
+                    // Make an AJAX request to update the task completion status
+                    $.ajax({
+                        url: '/update_task_status', // URL to handle task status update
+                        method: 'POST',
+                        data: { task_id: taskId, completed: isCompleted },
+                        success: function(response) {
+                            console.log('Task status updated successfully');
+                        },
+                        error: function(error) {
+                            console.log('Error updating task status:', error);
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>
