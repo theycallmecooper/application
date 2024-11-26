@@ -17,21 +17,21 @@
         .gradient-background {
             position: fixed;
             top: 0;
-            left: -200%; /* Start off-screen */
-            width: 300%; /* Large enough to hold the whole gradient */
+            left: 0;
+            width: 200%; /* Ensure it’s large enough to cover both visible and hidden areas */
             height: 100%;
-            background: linear-gradient(320deg, #00ddff, #e8e53e, #ff5e5e, #42aaff);
-            background-size: 100% 100%;
-            animation: moveGradient 20s linear infinite; /* Adjust speed with 20s */
+            background: linear-gradient(90deg, #00ddff, #e8e53e, #00ddff);
+            background-size: 200% 100%; /* Match the width for smooth looping */
+            animation: moveGradient 10s linear infinite;
             z-index: -1; /* Ensure it stays in the background */
         }
 
         @keyframes moveGradient {
-            from {
-                transform: translateX(0); /* Start at initial position */
+            0% {
+                background-position: 0 0;
             }
-            to {
-                transform: translateX(200%); /* Move completely across the screen */
+            100% {
+                background-position: -100% 0;
             }
         }
 
@@ -63,7 +63,7 @@
 
         .btn-custom:hover {
             background-color: #45109a;
-            color: white; /* Ensure text color remains white */
+            color: white;
         }
 
         #post-it {
@@ -121,7 +121,6 @@
     <!-- External JavaScript -->
     <script src="/static/js/script.js"></script>
     <script>
-        // Remove the post-it note after the animation ends
         document.addEventListener("DOMContentLoaded", () => {
             const postIt = document.getElementById("post-it");
             if (postIt) {
