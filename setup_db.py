@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -23,6 +23,7 @@ class Task(Base):
     id = Column(Integer, primary_key=True)
     description = Column(String, nullable=False)
     completed = Column(Boolean, default=False)
+    due_date = Column(Date, nullable=True)  # New due_date field
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', back_populates='todos')
 
