@@ -18,20 +18,23 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 200%; /* Ensure it’s large enough to cover both visible and hidden areas */
+            width: 200%; /* Ensures gradient spans twice the width for smooth motion */
             height: 100%;
             background: linear-gradient(90deg, #00ddff, #e8e53e, #00ddff);
-            background-size: 200% 100%; /* Match the width for smooth looping */
+            background-size: 200% 100%; /* Matches the width for seamless looping */
             animation: moveGradient 10s linear infinite;
-            z-index: -1; /* Ensure it stays in the background */
+            z-index: -1; /* Keeps it behind all other elements */
         }
 
         @keyframes moveGradient {
             0% {
                 background-position: 0 0;
             }
+            50% {
+                background-position: -100% 0; /* Moves fully to the left */
+            }
             100% {
-                background-position: -100% 0;
+                background-position: 0 0; /* Moves back to the start smoothly */
             }
         }
 
@@ -111,7 +114,7 @@
 
     <!-- Main Content -->
     <div class="container">
-        <img src="/static/img/todo-logo.png" alt="Logo" class="img-fluid" style="width: 100px; height: auto;">
+        <img src="/static/img/todo-logo.png" alt="Logo" class="img-fluid" style="width: 200px; height: auto;">
         <div>
             <a class="btn btn-custom" href="{{url_for('login')}}">Login</a>
             <a class="btn btn-custom" href="{{url_for('signup')}}">Sign Up</a>
