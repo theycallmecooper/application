@@ -28,11 +28,3 @@ class Task(Base):
 
 engine = create_engine('sqlite:///todo.db')
 Base.metadata.create_all(engine)
-
-
-    # class Task(Base):
-    #     __tablename__ = 'tasks'
-    #     id = Column(Integer, primary_key=True)
-    #     description = Column(String, nullable=False)
-    #     user_id = Column(Integer, ForeignKey('users.id'))
-    #     user = relationship('User', back_populates='tasks')

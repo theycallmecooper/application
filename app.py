@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for, jsonify
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from datetime import datetime
 from setup_db import User, Task  # Ensure User and Task models are defined in setup_db
 
 app = Flask(__name__)
@@ -126,3 +127,41 @@ def inject_favicon():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+    @app.route('/add_todo', methods=["POST"])
+    def add_todo():
+        if "user_id" not in session:
+            flash("Please log in to add a to-do.", "warning")
+            return redirect(url_for('login'))
+
+        task_description = request.form.get("task")
+        due_date_str = request.form.get("due_date")
+        if not task_description.strip():
+            flash("Task description cannot be empty.", "warning")
+            return redirect(url_for('dashboard'))
+
+        user_id = session["user_id"]
+        due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
+        new_task = Task(description=task_description.strip(), user_id=user_id, completed=False, due_date=due_date)
+        db_session.add(new_task)
+        db_session.commit()
+
+        flash("To-Do added successfully!", "success")
+        return redirect(url_for('dashboard'))
+
+    @app.route('/update_task_due_date', methods=["POST"])
+    def update_task_due_date():
+        if "user_id" not in session:
+            return jsonify({'status': 'error', 'message': 'Please log in to update a task.'}), 401
+
+        task_id = request.form.get('task_id')
+        due_date_str = request.form.get('due_date')
+
+        task = db_session.query(Task).get(task_id)
+
+        if task and task.user_id == session["user_id"]:
+            task.due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
+            db_session.commit()
+            return jsonify({'status': 'success', 'task_id': task_id, 'due_date': task.due_date})
+        else:
+            return jsonify({'status': 'error', 'message': 'To-Do not found or access denied'}), 400
