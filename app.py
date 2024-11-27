@@ -29,7 +29,10 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.username
             flash("User logged in successfully.", "info")
-            return redirect(url_for('dashboard'))
+
+            # Redirect to the original URL (next) or dashboard
+            next_url = request.args.get('next') or url_for('dashboard')
+            return redirect(next_url)
         else:
             flash("Invalid username or password.", "error")
 
@@ -60,7 +63,7 @@ def signup():
 def dashboard():
     if "user_id" not in session:
         flash("Please log in to access the dashboard.", "warning")
-        return redirect(url_for('login'))
+        return redirect(url_for('login', next=request.url))  # Pass original URL in `next`
 
     tasks = db_session.query(Task).filter_by(user_id=session['user_id']).all()
     return render_template('dashboard.html', tasks=tasks)
@@ -72,12 +75,14 @@ def add_todo():
         return redirect(url_for('login'))
 
     task_description = request.form.get("task")
+    due_date_str = request.form.get("due_date")
     if not task_description.strip():
         flash("Task description cannot be empty.", "warning")
         return redirect(url_for('dashboard'))
 
     user_id = session["user_id"]
-    new_task = Task(description=task_description.strip(), user_id=user_id, completed=False)  # Ensure `completed` is defaulted
+    due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
+    new_task = Task(description=task_description.strip(), user_id=user_id, completed=False, due_date=due_date)
     db_session.add(new_task)
     db_session.commit()
 
@@ -116,6 +121,23 @@ def update_task_status():
     else:
         return jsonify({'status': 'error', 'message': 'To-Do not found or access denied'}), 400
 
+@app.route('/update_task_due_date', methods=["POST"])
+def update_task_due_date():
+    if "user_id" not in session:
+        return jsonify({'status': 'error', 'message': 'Please log in to update a task.'}), 401
+
+    task_id = request.form.get('task_id')
+    due_date_str = request.form.get('due_date')
+
+    task = db_session.query(Task).get(task_id)
+
+    if task and task.user_id == session["user_id"]:
+        task.due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
+        db_session.commit()
+        return jsonify({'status': 'success', 'task_id': task_id, 'due_date': task.due_date})
+    else:
+        return jsonify({'status': 'error', 'message': 'To-Do not found or access denied'}), 400
+
 # Add favicon route
 @app.route('/favicon.ico')
 def favicon():
@@ -127,41 +149,3 @@ def inject_favicon():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-    @app.route('/add_todo', methods=["POST"])
-    def add_todo():
-        if "user_id" not in session:
-            flash("Please log in to add a to-do.", "warning")
-            return redirect(url_for('login'))
-
-        task_description = request.form.get("task")
-        due_date_str = request.form.get("due_date")
-        if not task_description.strip():
-            flash("Task description cannot be empty.", "warning")
-            return redirect(url_for('dashboard'))
-
-        user_id = session["user_id"]
-        due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
-        new_task = Task(description=task_description.strip(), user_id=user_id, completed=False, due_date=due_date)
-        db_session.add(new_task)
-        db_session.commit()
-
-        flash("To-Do added successfully!", "success")
-        return redirect(url_for('dashboard'))
-
-    @app.route('/update_task_due_date', methods=["POST"])
-    def update_task_due_date():
-        if "user_id" not in session:
-            return jsonify({'status': 'error', 'message': 'Please log in to update a task.'}), 401
-
-        task_id = request.form.get('task_id')
-        due_date_str = request.form.get('due_date')
-
-        task = db_session.query(Task).get(task_id)
-
-        if task and task.user_id == session["user_id"]:
-            task.due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
-            db_session.commit()
-            return jsonify({'status': 'success', 'task_id': task_id, 'due_date': task.due_date})
-        else:
-            return jsonify({'status': 'error', 'message': 'To-Do not found or access denied'}), 400
