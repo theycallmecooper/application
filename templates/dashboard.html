@@ -16,7 +16,7 @@
             font-family: Arial, sans-serif;
             min-height: 100%;
             background-size: 100% 100%;
-            padding-bottom: 50px; /* Space for footer */
+            padding-bottom: 50px;
         }
 
         .container {
@@ -126,7 +126,6 @@
         .call-to-action p {
             color: #ffffff;
         }
-
     </style>
 </head>
 <body>
@@ -174,7 +173,7 @@
         </p>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Use full jQuery version -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
@@ -190,8 +189,11 @@
                     method: 'POST',
                     data: { task_id: taskId },
                     success: function(response) {
-                        console.log('Task successfully deleted!');
-                        listItem.remove(); // Remove task from the list on success
+                        if (response.status === 'success') {
+                            listItem.remove();
+                        } else {
+                            alert(response.message || 'Error deleting task');
+                        }
                     },
                     error: function(error) {
                         console.log('Error deleting task:', error);
@@ -204,20 +206,22 @@
                 const taskId = $(this).data('task-id');
                 const isCompleted = $(this).is(':checked');
 
-                // Change the task style based on completion status
-                if (isCompleted) {
-                    $(this).closest('.list-group-item').addClass('completed').removeClass('pending');
-                } else {
-                    $(this).closest('.list-group-item').removeClass('completed').addClass('pending');
-                }
-
                 // Make an AJAX request to update task completion status
                 $.ajax({
                     url: '/update_task_status',
                     method: 'POST',
                     data: { task_id: taskId, completed: isCompleted },
                     success: function(response) {
-                        console.log('Task status updated successfully');
+                        if (response.status === 'success') {
+                            const listItem = $(`[data-task-id="${response.task_id}"]`);
+                            if (response.completed) {
+                                listItem.addClass('completed').removeClass('pending');
+                            } else {
+                                listItem.removeClass('completed').addClass('pending');
+                            }
+                        } else {
+                            alert(response.message || 'Error updating task status');
+                        }
                     },
                     error: function(error) {
                         console.log('Error updating task status:', error);
