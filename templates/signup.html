@@ -6,29 +6,35 @@
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        html, body {
+            height: 100%;
+        }
+
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(320deg, #00ddff, #e8e53e);
+            background: linear-gradient(90deg, #8933eb, #221397);
             color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100%;
+            background-color: cover;
+            padding-bottom: 50px;
         }
+
         .container {
-            text-align: center;
             background: rgba(255, 255, 255, 0.1);
-            padding: 40px;
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         .form-control {
             border-radius: 5px;
         }
+
         .btn-custom {
             margin-top: 20px;
             padding: 10px 20px;
@@ -38,9 +44,38 @@
             color: white;
             width: 48%;
         }
+
         .btn-custom:hover {
             background-color: #45109a;
-            color: white; /* Ensure text color remains white */
+            color: white;
+        }
+
+        .nav-link {
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            color: #53e1e6 !important;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 40px;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        footer a {
+            color: #8b56e1;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #e8e53e;
         }
     </style>
 </head>

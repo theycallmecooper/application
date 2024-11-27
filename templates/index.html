@@ -7,15 +7,17 @@
     <link rel="icon" href="todo-logo.png" type="image/png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        html, body {
+            height: 100%;
+        }
+
         body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            background: #f0f0f0;
+            background: linear-gradient(90deg, #8933eb, #221397);
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100%;
+            background-color: cover;
+            padding-bottom: 50px;
         }
 
         .gradient-background {
@@ -43,12 +45,12 @@
         }
 
         .container {
-            text-align: center;
             background: rgba(255, 255, 255, 0.1);
-            padding: 40px;
+            padding: 30px;
             border-radius: 10px;
-            color: white;
-            font-family: Arial, sans-serif;
+            margin-top: 40px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
         img {
@@ -83,7 +85,7 @@
             background-color: #fffc88;
             color: #444;
             font-family: Arial, sans-serif;
-            font-size: 3em; /* Increased font size */
+            font-size: 3em;
             font-weight: bold;
             display: flex;
             justify-content: center;
@@ -96,7 +98,7 @@
 
         @keyframes lift-off {
             0% {
-                transform: translateY(0) rotateX(0deg); /* Start from the top */
+                transform: translateY(0) rotateX(0deg);
                 opacity: 1;
             }
             50% {
@@ -107,6 +109,44 @@
                 transform: translateY(-120%) rotateX(60deg);
                 opacity: 0;
             }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 40px;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        footer a {
+            color: #8b56e1;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #e8e53e;
+        }
+
+        .call-to-action {
+            background: rgba(255, 253, 253, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .call-to-action h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .call-to-action p {
+            color: #ffffff;
         }
     </style>
 </head>
@@ -125,6 +165,13 @@
             <a class="btn btn-custom" href="{{url_for('signup')}}">Sign Up</a>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 Your Company. All rights reserved.</p>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+    </footer>
 
     <!-- External JavaScript -->
     <script src="/static/js/script.js"></script>
