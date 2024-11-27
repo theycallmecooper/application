@@ -131,6 +131,22 @@
         .call-to-action p {
             color: #ffffff;
         }
+
+        .btn-logout {
+            margin-top: 20px;
+            background-color: #808080;
+            border-color: #808080;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: #db4444;
+            border-color: #db4444;
+            color: white
+        }
     </style>
 </head>
 <body>
@@ -168,6 +184,10 @@
         <div class="call-to-action">
             <h2>Stay Organized!</h2>
             <p>Keep track of your tasks and accomplish more each day!</p>
+            <!-- Logout Button -->
+            <form action="{{ url_for('login') }}" method="POST">
+                <button type="submit" class="btn btn-logout">Logout</button>
+            </form>
         </div>
     </div>
 
