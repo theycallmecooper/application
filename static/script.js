@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const postIt = document.getElementById("post-it");
     if (postIt) {
@@ -8,18 +9,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const gradientBackground = document.querySelector('.gradient-background');
     if (gradientBackground) { // Check if gradient-background exists
-        let gradientStep = 0.1;
-        const gradientSpeed = 2; // Increased speed for more noticeable movement
+        const colors = [
+            [137, 51, 235], // Purple
+            [34, 19, 151],  // Dark Blue
+            [255, 105, 180], // Hot Pink
+            [60, 179, 113],  // Medium Sea Green
+            [255, 165, 0],    // Orange
+        ];
+        let colorIndex = 0;
+        let gradientStep = 0;
+        const gradientSpeed = 0.001; // Smaller increment for smoother transition
 
         function animateGradient() {
             gradientStep += gradientSpeed;
-            if (gradientStep > 1) {
+            if (gradientStep >= 1) {
                 gradientStep = 0;
+                colorIndex = (colorIndex + 1) % colors.length;
             }
 
-            // Smoothly interpolate between purple and dark blue
-            const color1 = interpolateColor([137, 51, 235], [34, 19, 151], gradientStep);
-            const color2 = interpolateColor([34, 19, 151], [137, 51, 235], gradientStep);
+            const nextColorIndex = (colorIndex + 1) % colors.length;
+            const color1 = interpolateColor(colors[colorIndex], colors[nextColorIndex], gradientStep);
+            const color2 = interpolateColor(colors[nextColorIndex], colors[(nextColorIndex + 1) % colors.length], gradientStep);
 
             gradientBackground.style.background = `linear-gradient(90deg, rgb(${color1.join(',')}), rgb(${color2.join(',')}))`;
 

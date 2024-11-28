@@ -1,0 +1,21 @@
+.fancy-text {
+    font-family: 'Pacifico', cursive; /* A fancy cursive font */
+    font-size: 2.5em;
+    color: #ffeb3b; /* Bright yellow color */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-top: 20px;
+    margin-bottom: 30px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+/* New class for logo image */
+.logo {
+    width: 250px;
+    height: auto;
+}
+
+/* Optional: Add a fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -12,13 +12,11 @@
         }
 
         body {
-            background: none; /* Remove background color to allow gradient to show */
+            background: none; /* Remove background color */
             color: white;
             font-family: Arial, sans-serif;
-            min-height: 100%;
-            background-color: cover;
-            padding-bottom: 50px;
             text-align: center;
+            margin: 0;
         }
 
         .gradient-background {
@@ -27,16 +25,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, #8933eb, #221397);
-            background-size: cover;
+            background: linear-gradient(90deg, rgb(137, 51, 235), rgb(34, 19, 151));
+            background-size: 400% 400%; /* Smooth gradient animation */
             z-index: -1;
-            /* Removed animation properties */
+            animation: GradientAnimation 10s infinite alternate ease-in-out;
         }
 
         @keyframes GradientAnimation {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
@@ -70,7 +68,6 @@
 
         .btn-custom:hover {
             background-color: #1b9ea4;
-            color: white;
         }
 
         #post-it {
@@ -90,7 +87,7 @@
             text-align: center;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
             z-index: 9999;
-            animation: lift-off 2.0s ease-out forwards;
+            animation: lift-off 2s ease-out forwards;
         }
 
         @keyframes lift-off {
@@ -100,7 +97,6 @@
             }
             50% {
                 transform: translateY(-50%) rotateX(30deg);
-                opacity: 1;
             }
             100% {
                 transform: translateY(-120%) rotateX(60deg);
@@ -127,28 +123,9 @@
         footer a:hover {
             color: #e8e53e;
         }
-
-        .call-to-action {
-            background: rgba(255, 253, 253, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .call-to-action h2 {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .call-to-action p {
-            color: #ffffff;
-        }
     </style>
 </head>
 <body>
-    <!-- Moving Gradient Background -->
     <div class="gradient-background"></div>
 
     <!-- Full-screen Post-it Note -->
@@ -156,10 +133,11 @@
 
     <!-- Main Content -->
     <div class="container">
-        <img src="/static/img/todo-logo.png" alt="Logo" class="img-fluid" style="width: 250px; height: auto;">
+        <img src="/static/img/todo-logo.png" alt="Logo" class="img-fluid logo">
+        <h2 class="fancy-text">Done'N'Dusted</h2>
         <div>
-            <a class="btn btn-custom" href="{{url_for('login')}}">Login</a>
-            <a class="btn btn-custom" href="{{url_for('signup')}}">Sign Up</a>
+            <a class="btn btn-custom" href="{{ url_for('login') }}">Login</a>
+            <a class="btn btn-custom" href="{{ url_for('signup') }}">Sign Up</a>
         </div>
     </div>
 
@@ -168,8 +146,6 @@
         <p>&copy; 2024 Done'N'Dusted</p>
     </footer>
 
-    <!-- External JavaScript -->
-    <script src="/static/js/script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const postIt = document.getElementById("post-it");
