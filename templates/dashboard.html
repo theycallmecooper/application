@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags and title -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
+    <!-- Linking Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        /* CSS styles for the dashboard */
         html, body {
             height: 100%;
         }
@@ -152,6 +155,7 @@
 <body>
     
     <div class="container">
+        <!-- Dashboard Header -->
         <h1 class="text-center mb-4">Your To-Do List</h1>
 
         <!-- Form to Add a New To-Do -->
@@ -175,6 +179,7 @@
 
         <!-- Display To-Do List -->
         <ul class="list-group">
+            <!-- Loop through tasks and display each -->
             {% for task in tasks %}
             <li class="list-group-item d-flex justify-content-between align-items-center {% if task.completed %}completed{% else %}pending{% endif %}" data-task-id="{{ task.id }}">
                 <div>
@@ -199,6 +204,7 @@
             </li>
             {% endfor %}
         </ul>
+        
         <!-- Call to Action Section -->
         <div class="call-to-action">
             <h2>Stay Organized!</h2>
@@ -208,10 +214,12 @@
         </div>
     </div>
 
+    <!-- Footer section -->
     <footer>
         <p>&copy; 2024 Done'N'Dusted</p>
     </footer>
 
+    <!-- Including JavaScript libraries and Task Management Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
