@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for, jsonify
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Date
 from datetime import datetime
-from setup_db import User, Task  # Ensure User and Task models are defined in setup_db
+from setup_db import User, Task, Category  # Ensure User and Task models are defined in setup_db
 
 app = Flask(__name__)
 app.secret_key = '#sigmarizz23#'
@@ -66,7 +66,8 @@ def dashboard():
         return redirect(url_for('login', next=request.url))  # Pass original URL in `next`
 
     tasks = db_session.query(Task).filter_by(user_id=session['user_id']).all()
-    return render_template('dashboard.html', tasks=tasks)
+    categories = db_session.query(Category).all()
+    return render_template('dashboard.html', tasks=tasks, categories=categories)
 
 @app.route('/add_todo', methods=["POST"])
 def add_todo():
@@ -82,11 +83,32 @@ def add_todo():
 
     user_id = session["user_id"]
     due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
-    new_task = Task(description=task_description.strip(), user_id=user_id, completed=False, due_date=due_date)
+    category_id = request.form.get("category")
+    category = db_session.query(Category).get(category_id) if category_id else None
+    new_task = Task(description=task_description.strip(), user_id=user_id, completed=False, due_date=due_date, category=category)
     db_session.add(new_task)
     db_session.commit()
 
     flash("To-Do added successfully!", "success")
+    return redirect(url_for('dashboard'))
+
+@app.route('/add_category', methods=["POST"])
+def add_category():
+    if "user_id" not in session:
+        flash("Please log in to add a category.", "warning")
+        return redirect(url_for('login'))
+    category_name = request.form.get('category_name').strip()
+    if category_name:
+        existing_category = db_session.query(Category).filter_by(name=category_name).first()
+        if not existing_category:
+            new_category = Category(name=category_name)
+            db_session.add(new_category)
+            db_session.commit()
+            flash("Category added successfully!", "success")
+        else:
+            flash("Category already exists.", "warning")
+    else:
+        flash("Category name cannot be empty.", "warning")
     return redirect(url_for('dashboard'))
 
 @app.route('/delete_todo', methods=["POST"])
@@ -137,6 +159,12 @@ def update_task_due_date():
         return jsonify({'status': 'success', 'task_id': task_id, 'due_date': task.due_date})
     else:
         return jsonify({'status': 'error', 'message': 'To-Do not found or access denied'}), 400
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('login'))
 
 # Add favicon route
 @app.route('/favicon.ico')

@@ -156,8 +156,22 @@
         <!-- Form to Add a New To-Do -->
         <form action="{{ url_for('add_todo') }}" method="POST" class="form-inline justify-content-center">
             <input type="text" name="task" placeholder="New To-Do" required class="form-control mr-2" />
+            <input type="date" name="due_date" class="form-control mr-2" />
+            <select name="category" class="form-control mr-2">
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
             <button type="submit" class="btn btn-primary">Add</button>
         </form>
+
+        <!-- Form to Add a New Category -->
+        <form action="{{ url_for('add_category') }}" method="POST" class="form-inline justify-content-center mt-3">
+            <input type="text" name="category_name" placeholder="New Category" required class="form-control mr-2" />
+            <button type="submit" class="btn btn-secondary">Add Category</button>
+        </form>
+
         <!-- Display To-Do List -->
         <ul class="list-group">
             {% for task in tasks %}
@@ -166,6 +180,12 @@
                     <input type="checkbox" class="task-checkbox" {% if task.completed %}checked{% endif %} data-task-id="{{ task.id }}">
                     <span class="ml-2">
                         {{ task.description }}
+                        {% if task.due_date %}
+                        <small class="text-muted">(Due: {{ task.due_date.strftime('%Y-%m-%d') }})</small>
+                        {% endif %}
+                        {% if task.category %}
+                            <span class="badge badge-info">{{ task.category.name }}</span>
+                        {% endif %}
                         {% if task.completed %}
                         <strong class="text-success">(Completed)</strong>
                         {% else %}
@@ -183,9 +203,7 @@
             <h2>Stay Organized!</h2>
             <p>Keep track of your tasks and accomplish more each day!</p>
             <!-- Logout Button -->
-            <form action="{{ url_for('login') }}" method="POST">
-                <button type="submit" class="btn btn-logout">Logout</button>
-            </form>
+            <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
         </div>
     </div>
 
