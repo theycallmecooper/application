@@ -12,7 +12,7 @@
         }
 
         body {
-            background: linear-gradient(90deg, #8933eb, #221397);
+            background: none; /* Remove background color to allow gradient to show */
             color: white;
             font-family: Arial, sans-serif;
             min-height: 100%;
@@ -25,24 +25,18 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 200%;
+            width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, #8933eb, #221397, #8933eb);
-            background-size: 200% 100%;
-            animation: moveGradient 10s linear infinite;
+            background: linear-gradient(90deg, #8933eb, #221397);
+            background-size: cover;
             z-index: -1;
+            /* Removed animation properties */
         }
 
-        @keyframes moveGradient {
-            0% {
-                background-position: 0 0;
-            }
-            50% {
-                background-position: -100% 0;
-            }
-            100% {
-                background-position: 0 0;
-            }
+        @keyframes GradientAnimation {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
         }
 
         .container {

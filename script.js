@@ -5,24 +5,33 @@ document.addEventListener("DOMContentLoaded", () => {
     postIt.addEventListener("animationend", () => {
       postIt.style.display = "none";
     });
-  });
 
-  // Moving gradient background
-let gradientStep = 0;
+    const gradientBackground = document.querySelector('.gradient-background');
+    let gradientStep = 0;
+    const gradientSpeed = 0.005; // Adjust speed as needed
 
-function animateGradient() {
-    gradientStep += 2; // Adjust speed by changing this value
-    const color1 = `hsl(${Math.sin(gradientStep) * 360}, 70%, 50%)`;
-    const color2 = `hsl(${Math.cos(gradientStep + Math.PI) * 360}, 70%, 50%)`;
+    function animateGradient() {
+        gradientStep += gradientSpeed;
+        if (gradientStep >= 1) {
+            gradientStep = 0;
+        }
 
-    document.body.style.background = `linear-gradient(320deg, ${color1}, ${color2})`;
-    requestAnimationFrame(animateGradient);
-}
+        const r = Math.round(137 * (1 - gradientStep) + 34 * gradientStep);
+        const g = Math.round(51 * (1 - gradientStep) + 19 * gradientStep);
+        const b = Math.round(235 * (1 - gradientStep) + 151 * gradientStep);
+
+        const color1 = `rgb(${r}, ${g}, ${b})`;
+        const color2 = `rgb(34, 19, 151)`; // Dark blue
+
+        gradientBackground.style.background = `linear-gradient(90deg, ${color1}, ${color2})`;
+
+        requestAnimationFrame(animateGradient);
+    }
+
+    animateGradient();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
-    animateGradient();
-
-    // Post-it note animation
     const postIt = document.getElementById("post-it");
     if (postIt) {
         postIt.addEventListener("animationend", () => {
