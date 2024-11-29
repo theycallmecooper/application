@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags and title -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Done'N'Dusted</title>
+    <!-- Linking Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
+    <style>
+        /* CSS styles for the about page */
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background: linear-gradient(90deg, #8933eb, #221397);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100%;
+            background-color: cover;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        p, li {
+            color: #ffffff;
+            font-size: 1.1em;
+        }
+
+        .btn-primary {
+            background-color: #20c9c6;
+            border-color: #20c9c6;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #198f85;
+            border-color: #198f85;
+        }
+
+        .typewriter h1 {
+            overflow: hidden;
+            border-right: .15em solid #ffffff;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #ffffff; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="typewriter">
+            <h1 class="text-center mb-4">About Done'N'Dusted</h1>
+        </div>
+        <p>Welcome to Done'N'Dusted, your personal task management app designed to help you stay organized and productive.</p>
+        <h2>How to Use This App</h2>
+        <ul>
+            <li><strong>Add Tasks:</strong> Use the dashboard to add new tasks, set due dates, and assign categories.</li>
+            <li><strong>Manage Categories:</strong> Create, delete, and assign categories to keep your tasks organized.</li>
+            <li><strong>Track Progress:</strong> Mark tasks as completed and see how many days are left until each task is due.</li>
+            <li><strong>Stay Informed:</strong> Overdue tasks and tasks due today are highlighted for your attention.</li>
+        </ul>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+        </div>
+    </div>
+    <!-- Include jQuery before other scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include Moment.js (required by FullCalendar) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <!-- Include FullCalendar script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Typewriter effect for the heading
+            const typewriterText = "About Done'N'Dusted";
+            let index = 0;
+
+            function typeWriter() {
+                if (index < typewriterText.length) {
+                    document.querySelector(".typewriter h1").innerHTML += typewriterText.charAt(index);
+                    index++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+
+            typeWriter();
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                events: "{{ tasks | tojson | safe }}"
+            });
+        });
+    </script>
+</body>
+</html>

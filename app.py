@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for, jsonify
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, Date
-from datetime import datetime
+from datetime import datetime, timedelta
 from setup_db import User, Task, Category  # Ensure User and Task models are defined in setup_db
 
 app = Flask(__name__)
@@ -67,7 +67,38 @@ def dashboard():
 
     tasks = db_session.query(Task).filter_by(user_id=session['user_id']).all()
     categories = db_session.query(Category).all()
-    return render_template('dashboard.html', tasks=tasks, categories=categories)
+    tasks_with_time_remaining = []
+    today = datetime.now().date()
+    for task in tasks:
+        if task.due_date:
+            delta = task.due_date - today
+            if delta.days > 0:
+                time_remaining = f"In {delta.days} day{'s' if delta.days != 1 else ''}"
+                is_overdue = False
+                is_due_today = False
+            elif delta.days == 0:
+                time_remaining = "Due today"
+                is_overdue = False
+                is_due_today = True
+            else:
+                time_remaining = f"Overdue by {abs(delta.days)} day{'s' if abs(delta.days) != 1 else ''}"
+                is_overdue = True
+                is_due_today = False
+        else:
+            time_remaining = None
+            is_overdue = False
+            is_due_today = False
+        tasks_with_time_remaining.append({
+            'id': task.id,
+            'description': task.description,
+            'due_date': task.due_date,
+            'time_remaining': time_remaining,
+            'is_overdue': is_overdue,
+            'is_due_today': is_due_today,
+            'completed': task.completed,
+            'category_id': task.category_id
+        })
+    return render_template('dashboard.html', tasks=tasks_with_time_remaining, categories=categories)
 
 @app.route('/add_todo', methods=["POST"])
 def add_todo():
@@ -159,6 +190,59 @@ def update_task_due_date():
         return jsonify({'status': 'success', 'task_id': task_id, 'due_date': task.due_date})
     else:
         return jsonify({'status': 'error', 'message': 'To-Do not found or access denied'}), 400
+
+@app.route('/delete_category', methods=["POST"])
+def delete_category():
+    if "user_id" not in session:
+        flash("Please log in to delete a category.", "warning")
+        return redirect(url_for('login'))
+
+    category_id = request.form.get('category_id')
+    category = db_session.query(Category).get(category_id)
+    if category:
+        db_session.delete(category)
+        db_session.commit()
+        flash("Category deleted successfully!", "success")
+    else:
+        flash("Category not found.", "error")
+    return redirect(url_for('dashboard'))
+
+@app.route('/calendar')
+def calendar():
+    if "user_id" not in session:
+        flash("Please log in to view the calendar.", "warning")
+        return redirect(url_for('login'))
+
+    tasks = db_session.query(Task).filter_by(user_id=session['user_id']).all()
+    tasks_with_time_remaining = []
+    today = datetime.now().date()
+    for task in tasks:
+        if task.due_date:
+            delta = task.due_date - today
+            if delta.days > 0:
+                time_remaining = f"In {delta.days} day{'s' if delta.days != 1 else ''}"
+                is_overdue = False
+                is_due_today = False
+            elif delta.days == 0:
+                time_remaining = "Due today"
+                is_overdue = False
+                is_due_today = True
+            else:
+                time_remaining = f"Overdue by {abs(delta.days)} day{'s' if abs(delta.days) != 1 else ''}"
+                is_overdue = True
+                is_due_today = False
+        else:
+            time_remaining = None
+            is_overdue = False
+            is_due_today = False
+        tasks_with_time_remaining.append({
+            'description': task.description,
+            'due_date': task.due_date,
+            'time_remaining': time_remaining,
+            'is_overdue': is_overdue,
+            'is_due_today': is_due_today
+        })
+    return render_template('calendar.html', tasks=tasks_with_time_remaining)
 
 @app.route('/logout')
 def logout():

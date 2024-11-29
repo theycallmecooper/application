@@ -136,19 +136,126 @@
         }
 
         .btn-logout {
-            margin-top: 20px;
             background-color: #808080;
             border-color: #808080;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px; /* Match btn-primary padding */
             border-radius: 10px;
             transition: background-color 0.3s;
+            height: 50px; /* Match btn-primary height */
         }
 
         .btn-logout:hover {
             background-color: #db4444;
             border-color: #db4444;
             color: white
+        }
+
+        .category-binder {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-binder h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .category-binder .list-group-item {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            color: #333;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .category-binder .list-group-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-binder .list-group-item.completed {
+            text-decoration: line-through;
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .category-binder .list-group-item.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        /* Badges for different due statuses */
+        .badge-pill {
+            font-size: 0.9em;
+            padding: 0.5em 1em;
+        }
+
+        .badge-overdue {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-due-today {
+            background-color: #f5de92;
+            color: #856404;
+        }
+
+        .badge-upcoming {
+            background-color: #77e390;
+            color: #155724;
+        }
+
+        .task-title {
+            font-weight: bold;
+        }
+
+        .task-due-date {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Style for overdue incomplete tasks */
+        .overdue-task {
+            background-color: #cd7d84; /* Light red background */
+            color: #721c24;            /* Dark red text */
+        }
+
+        /* Badge for completed tasks */
+        .badge-completed {
+            background-color: #77e390; /* Light green background */
+            color: #155724;            /* Dark green text */
+        }
+
+        /* Text color classes matching badge colors */
+        .text-overdue {
+            color: #721c24; /* Dark red */
+        }
+
+        .text-due-today {
+            color: #856404; /* Dark yellow */
+        }
+
+        .text-upcoming {
+            color: #155724; /* Dark green */
+        }
+
+        .text-no-due {
+            color: #6c757d; /* Gray */
+        }
+
+        /* Custom style for Delete Category button hover */
+        .btn-delete-category:hover {
+            background-color: #dc3545; /* Bootstrap's red color */
+            border-color: #dc3545;
         }
     </style>
 </head>
@@ -159,58 +266,86 @@
         <h1 class="text-center mb-4">Your To-Do List</h1>
 
         <!-- Form to Add a New To-Do -->
-        <form action="{{ url_for('add_todo') }}" method="POST" class="form-inline justify-content-center">
-            <input type="text" name="task" placeholder="New To-Do" required class="form-control mr-2" />
-            <input type="date" name="due_date" class="form-control mr-2" />
-            <select name="category" class="form-control mr-2">
+        <form action="{{ url_for('add_todo') }}" method="POST" class="form-inline justify-content-center mb-3">
+            <input type="text" name="task" placeholder="New To-Do" required class="form-control mr-2" style="width: 300px;" />
+            <input type="date" name="due_date" class="form-control mr-2" style="width: 200px;" />
+            <select name="category" class="form-control mr-2" style="width: 200px;">
                 <option value="">Select Category</option>
                 {% for category in categories %}
                     <option value="{{ category.id }}">{{ category.name }}</option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary" style="height: 50px;">Add</button>
         </form>
 
-        <!-- Form to Add a New Category -->
-        <form action="{{ url_for('add_category') }}" method="POST" class="form-inline justify-content-center mt-3">
-            <input type="text" name="category_name" placeholder="New Category" required class="form-control mr-2" />
-            <button type="submit" class="btn btn-secondary">Add Category</button>
-        </form>
+        <!-- Align Add and Delete Category Forms horizontally with Add To-Do form -->
+        <div class="d-flex justify-content-center flex-wrap">
+            <!-- Add Category Form -->
+            <form action="{{ url_for('add_category') }}" method="POST" class="form-inline mr-3 mb-2">
+                <input type="text" name="category_name" placeholder="New Category" required class="form-control mr-2" style="width: 500px;" />
+                <button type="submit" class="btn btn-primary" style="height: 50px;">Add Category</button>
+            </form>
 
-        <!-- Display To-Do List -->
-        <ul class="list-group">
-            <!-- Loop through tasks and display each -->
-            {% for task in tasks %}
-            <li class="list-group-item d-flex justify-content-between align-items-center {% if task.completed %}completed{% else %}pending{% endif %}" data-task-id="{{ task.id }}">
-                <div>
-                    <input type="checkbox" class="task-checkbox" {% if task.completed %}checked{% endif %} data-task-id="{{ task.id }}">
-                    <span class="ml-2">
-                        {{ task.description }}
+            <!-- Delete Category Form -->
+            <form action="{{ url_for('delete_category') }}" method="POST" class="form-inline mb-2">
+                <select name="category_id" class="form-control mr-2" style="width: 500px;">
+                    <option value="">Select Category to Delete</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary btn-delete-category" style="height: 50px;">Delete Category</button>
+            </form>
+        </div>
+
+        <!-- Display To-Do List by Category -->
+        {% for category in categories %}
+        <div class="category-binder">
+            <h3>{{ category.name }}</h3>
+            <ul class="list-group">
+                {% for task in tasks if task.category_id == category.id %}
+                <li class="list-group-item d-flex justify-content-between align-items-center {% if task.completed %}completed{% else %}pending{% endif %} {% if task.is_overdue and not task.completed %}overdue-task{% endif %}" data-task-id="{{ task.id }}">
+                    <div>
+                        <input type="checkbox" class="task-checkbox" {% if task.completed %}checked{% endif %} data-task-id="{{ task.id }}">
+                        <span class="ml-2 task-title">{{ task.description }}</span>
                         {% if task.due_date %}
-                        <small class="text-muted">(Due: {{ task.due_date.strftime('%Y-%m-%d') }})</small>
+                        <br>
+                        <small class="task-due-date">Due: {{ task.due_date.strftime('%A, %B %d, %Y') }}</small>
                         {% endif %}
-                        {% if task.category %}
-                            <span class="badge badge-info">{{ task.category.name }}</span>
-                        {% endif %}
-                        {% if task.completed %}
-                        <strong class="text-success">(Completed)</strong>
+                    </div>
+                    {% if task.completed %}
+                    <span class="badge badge-pill badge-completed">Completed</span>
+                    {% elif task.time_remaining %}
+                    <span class="badge badge-pill
+                        {% if task.is_overdue %}
+                            badge-overdue text-overdue
+                        {% elif task.is_due_today %}
+                            badge-due-today text-due-today
                         {% else %}
-                        <strong class="text-warning">(Pending)</strong>
+                            badge-upcoming text-upcoming
                         {% endif %}
+                    ">
+                        {{ task.time_remaining }}
                     </span>
-                </div>
-                <!-- Delete Button -->
-                <button type="button" class="btn btn-danger btn-sm delete-task">Delete</button>
-            </li>
-            {% endfor %}
-        </ul>
+                    {% else %}
+                    <span class="badge badge-secondary badge-pill text-no-due">No due date</span>
+                    {% endif %}
+                    <button type="button" class="btn btn-danger btn-sm delete-task">Delete</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
         
         <!-- Call to Action Section -->
         <div class="call-to-action">
             <h2>Stay Organized!</h2>
             <p>Keep track of your tasks and accomplish more each day!</p>
-            <!-- Logout Button -->
-            <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            <!-- Logout and About Buttons Aligned -->
+            <div class="d-flex justify-content-center">
+                <a href="{{ url_for('logout') }}" class="btn btn-logout mr-3">Logout</a>
+                <a href="{{ url_for('calendar') }}" class="btn btn-primary">About</a>
+            </div>
         </div>
     </div>
 
@@ -278,4 +413,5 @@
         });
     </script>
 </body>
-</html>
+</html> 
+
