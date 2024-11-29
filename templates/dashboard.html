@@ -257,11 +257,20 @@
             background-color: #dc3545; /* Bootstrap's red color */
             border-color: #dc3545;
         }
+
+        /* Custom style for the welcome message */
+        .welcome-message {
+            font-weight: bold;
+            color: #00d9ff; /* Complementary color to the site's scheme */
+        }
     </style>
 </head>
 <body>
     
     <div class="container">
+        <!-- Welcome Message -->
+        <h2 class="text-center mb-4 welcome-message">Welcome, {{ session['username'] }}!</h2>
+
         <!-- Dashboard Header -->
         <h1 class="text-center mb-4">Your To-Do List</h1>
 
