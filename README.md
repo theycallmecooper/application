@@ -25,12 +25,3 @@ Done'N'Dusted is a sleek personal task management app designed to help you organ
 - **Animations**: Custom JavaScript Gradient Effects  
 
 ---
-
-## 🎨 Live Preview  
-
-Include screenshots or previews of your application once hosted, or use placeholders:  
-![Screenshot of the Dashboard](picture1.png)  
-_Sample preview of the dashboard with tasks and categories._  
-
----
-
