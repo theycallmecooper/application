@@ -51,3 +51,15 @@ Follow these steps to set up Done'N'Dusted locally on your machine:
 ```bash
 git clone https://github.com/yourusername/donendusted.git
 cd donendusted
+
+### 2. Install Dependencies
+pip install -r requirements.txt
+
+### 3. Set up database
+python setup_db.py
+
+### 4. Run application
+python app.py
+
+### Open from link in terminal (looks like this):
+http://127.0.0.1:5000
