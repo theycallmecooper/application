@@ -24,42 +24,13 @@ Done'N'Dusted is a sleek personal task management app designed to help you organ
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap  
 - **Animations**: Custom JavaScript Gradient Effects  
 
---- 
-
-## Acknowledgements
-
-- [Flask](https://flask.palletsprojects.com/)
-- [Bootstrap](https://getbootstrap.com/)
-- [jQuery](https://jquery.com/)
-- [FullCalendar](https://fullcalendar.io/)
-- 
 ---
 
 ## 🎨 Live Preview  
 
-![Screenshot of the Dashboard](https://via.placeholder.com/800x400?text=Dashboard+Preview)  
+Include screenshots or previews of your application once hosted, or use placeholders:  
+![Screenshot of the Dashboard](picture1.png)  
 _Sample preview of the dashboard with tasks and categories._  
 
 ---
 
-## 🚀 Getting Started  
-
-Follow these steps to set up Done'N'Dusted locally on your machine:  
-
-### 1. Clone the Repository  
-
-```bash
-git clone https://github.com/yourusername/donendusted.git
-cd donendusted
-
-### 2. Install Dependencies
-pip install -r requirements.txt
-
-### 3. Set up database
-python setup_db.py
-
-### 4. Run application
-python app.py
-
-### Open from link in terminal (looks like this):
-http://127.0.0.1:5000
