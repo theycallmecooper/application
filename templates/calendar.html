@@ -70,6 +70,18 @@
             from, to { border-color: transparent }
             50% { border-color: #ffffff; }
         }
+
+        .btn-coffee {
+            background-color: #ff813f;
+            border-color: #ff813f;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .btn-coffee:hover {
+            background-color: #e66b2e;
+            border-color: #e66b2e;
+        }
     </style>
 </head>
 <body>
@@ -87,6 +99,9 @@
         </ul>
         <div class="text-center mt-4">
             <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+        </div>
+        <div class="text-center mt-4">
+            <a href="https://www.buymeacoffee.com/yourprofile" target="_blank" class="btn btn-coffee">Buy Me a Coffee</a>
         </div>
     </div>
     <!-- Include jQuery before other scripts -->
