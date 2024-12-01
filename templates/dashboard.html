@@ -323,6 +323,7 @@
                     <option value="{{ category.id }}">{{ category.name }}</option>
                 {% endfor %}
             </select>
+            <textarea name="task_description" placeholder="Description" class="form-control mr-2" style="width: 300px;"></textarea>
             <button type="submit" class="btn btn-primary" style="height: 50px;">Add</button>
         </form>
 
@@ -376,6 +377,10 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="editTaskBriefDescription">Brief Description</label>
+                                <textarea class="form-control" id="editTaskBriefDescription" name="task_brief_description"></textarea>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -400,9 +405,13 @@
                         <br>
                         <small class="task-due-date">Due: {{ task.due_date.strftime('%A, %B %d, %Y') }}</small>
                         {% endif %}
+                        {% if task.brief_description %}
+                        <br>
+                        <small class="task-brief-description">{{ task.brief_description }}</small>
+                        {% endif %}
                     </div>
                     <div>
-                        <button type="button" class="btn btn-edit btn-sm edit-task" data-task-id="{{ task.id }}" data-task-description="{{ task.description }}" data-task-due-date="{{ task.due_date }}" data-task-category="{{ task.category_id }}">Edit</button>
+                        <button type="button" class="btn btn-edit btn-sm edit-task" data-task-id="{{ task.id }}" data-task-description="{{ task.description }}" data-task-due-date="{{ task.due_date }}" data-task-category="{{ task.category_id }}" data-task-brief-description="{{ task.brief_description }}">Edit</button>
                         <button type="button" class="btn btn-danger btn-sm delete-task">Delete</button>
                     </div>
                 </li>
@@ -491,11 +500,13 @@
                 const taskDescription = $(this).data('task-description');
                 const taskDueDate = $(this).data('task-due-date');
                 const taskCategory = $(this).data('task-category');
+                const taskBriefDescription = $(this).data('task-brief-description');
 
                 $('#editTaskId').val(taskId);
                 $('#editTaskDescription').val(taskDescription);
                 $('#editDueDate').val(taskDueDate);
                 $('#editCategory').val(taskCategory);
+                $('#editTaskBriefDescription').val(taskBriefDescription);
 
                 $('#editTodoModal').modal('show');
             });

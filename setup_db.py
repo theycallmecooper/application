@@ -29,6 +29,7 @@ class Task(Base):
     __tablename__ = 'tasks'
     id = Column(Integer, primary_key=True)
     description = Column(String, nullable=False)
+    brief_description = Column(String, nullable=True)  # Add brief_description column
     completed = Column(Boolean, default=False)
     due_date = Column(Date, nullable=True)  # Add due_date column
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)

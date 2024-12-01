@@ -21,10 +21,14 @@ categories_table.create(engine, checkfirst=True)
 # Reflect the tasks table
 tasks_table = Table('tasks', metadata, autoload_with=engine)
 
-# Add the new column
+# Add the new columns
 if not hasattr(tasks_table.c, 'due_date'):
     with engine.connect() as conn:
         conn.execute('ALTER TABLE tasks ADD COLUMN due_date DATE')
+
+if not hasattr(tasks_table.c, 'brief_description'):
+    with engine.connect() as conn:
+        conn.execute('ALTER TABLE tasks ADD COLUMN brief_description STRING')
 
 # Add category_id column to tasks table if it doesn't exist
 if not hasattr(tasks_table.c, 'category_id'):

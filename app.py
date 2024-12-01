@@ -109,6 +109,7 @@ def add_todo():
 
     task_description = request.form.get("task")
     due_date_str = request.form.get("due_date")
+    brief_description = request.form.get("task_description")
     if not task_description.strip():
         flash("Task description cannot be empty.", "warning")
         return redirect(url_for('dashboard'))
@@ -117,7 +118,7 @@ def add_todo():
     due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
     category_id = request.form.get("category")
     category = db_session.query(Category).get(category_id) if category_id else None
-    new_task = Task(description=task_description.strip(), user_id=user_id, completed=False, due_date=due_date, category=category)
+    new_task = Task(description=task_description.strip(), user_id=user_id, completed=False, due_date=due_date, category=category, brief_description=brief_description)
     db_session.add(new_task)
     db_session.commit()
 
@@ -296,6 +297,7 @@ def edit_todo():
     task_description = request.form.get("task_description")
     due_date_str = request.form.get("due_date")
     category_id = request.form.get("category")
+    brief_description = request.form.get("task_brief_description")
 
     task = db_session.query(Task).get(task_id)
 
@@ -303,6 +305,7 @@ def edit_todo():
         task.description = task_description.strip()
         task.due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
         task.category_id = category_id if category_id else None
+        task.brief_description = brief_description
         db_session.commit()
         flash("To-Do updated successfully!", "success")
     else:
