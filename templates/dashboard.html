@@ -117,6 +117,19 @@
             padding: 5px 15px;
         }
 
+        .btn-edit {
+            border-radius: 20px;
+            padding: 5px 15px;
+            background-color: #007bff; /* Mid blue color */
+            border-color: #007bff;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            border-color: #0056b3;
+        }
+
         .call-to-action {
             background: rgba(255, 253, 253, 0.2);
             padding: 20px;
@@ -338,6 +351,46 @@
             </form>
         </div>
 
+        <!-- Edit To-Do Modal -->
+        <div class="modal fade" id="editTodoModal" tabindex="-1" aria-labelledby="editTodoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="editTodoForm" action="{{ url_for('edit_todo') }}" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editTodoModalLabel">Edit To-Do</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="task_id" id="editTaskId">
+                            <div class="form-group">
+                                <label for="editTaskDescription">Description</label>
+                                <input type="text" class="form-control" id="editTaskDescription" name="task_description" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editDueDate">Due Date</label>
+                                <input type="date" class="form-control" id="editDueDate" name="due_date">
+                            </div>
+                            <div class="form-group">
+                                <label for="editCategory">Category</label>
+                                <select class="form-control" id="editCategory" name="category">
+                                    <option value="">Select Category</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!-- Display To-Do List by Category -->
         {% for category in categories %}
         <div class="category-binder">
@@ -353,24 +406,10 @@
                         <small class="task-due-date">Due: {{ task.due_date.strftime('%A, %B %d, %Y') }}</small>
                         {% endif %}
                     </div>
-                    {% if task.completed %}
-                    <span class="badge badge-pill badge-completed">Completed</span>
-                    {% elif task.time_remaining %}
-                    <span class="badge badge-pill
-                        {% if task.is_overdue %}
-                            badge-overdue text-overdue
-                        {% elif task.is_due_today %}
-                            badge-due-today text-due-today
-                        {% else %}
-                            badge-upcoming text-upcoming
-                        {% endif %}
-                    ">
-                        {{ task.time_remaining }}
-                    </span>
-                    {% else %}
-                    <span class="badge badge-secondary badge-pill text-no-due">No due date</span>
-                    {% endif %}
-                    <button type="button" class="btn btn-danger btn-sm delete-task">Delete</button>
+                    <div>
+                        <button type="button" class="btn btn-edit btn-sm edit-task" data-task-id="{{ task.id }}" data-task-description="{{ task.description }}" data-task-due-date="{{ task.due_date }}" data-task-category="{{ task.category_id }}">Edit</button>
+                        <button type="button" class="btn btn-danger btn-sm delete-task">Delete</button>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
@@ -449,6 +488,21 @@
                         console.log('Error updating task status:', error);
                     }
                 });
+            });
+
+            // Handle edit task button click
+            $('.edit-task').on('click', function() {
+                const taskId = $(this).data('task-id');
+                const taskDescription = $(this).data('task-description');
+                const taskDueDate = $(this).data('task-due-date');
+                const taskCategory = $(this).data('task-category');
+
+                $('#editTaskId').val(taskId);
+                $('#editTaskDescription').val(taskDescription);
+                $('#editDueDate').val(taskDueDate);
+                $('#editCategory').val(taskCategory);
+
+                $('#editTodoModal').modal('show');
             });
         });
     </script>

@@ -286,6 +286,30 @@ def add_random_todo():
     flash("Random To-Do added successfully!", "success")
     return redirect(url_for('dashboard'))
 
+@app.route('/edit_todo', methods=["POST"])
+def edit_todo():
+    if "user_id" not in session:
+        flash("Please log in to edit a to-do.", "warning")
+        return redirect(url_for('login'))
+
+    task_id = request.form.get("task_id")
+    task_description = request.form.get("task_description")
+    due_date_str = request.form.get("due_date")
+    category_id = request.form.get("category")
+
+    task = db_session.query(Task).get(task_id)
+
+    if task and task.user_id == session["user_id"]:
+        task.description = task_description.strip()
+        task.due_date = datetime.strptime(due_date_str, '%Y-%m-%d') if due_date_str else None
+        task.category_id = category_id if category_id else None
+        db_session.commit()
+        flash("To-Do updated successfully!", "success")
+    else:
+        flash("To-Do not found or access denied.", "error")
+
+    return redirect(url_for('dashboard'))
+
 # Add favicon route
 @app.route('/favicon.ico')
 def favicon():
