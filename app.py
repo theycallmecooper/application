@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, Date
 from datetime import datetime, timedelta
 from setup_db import User, Task, Category  # Ensure User and Task models are defined in setup_db
+import random
 
 app = Flask(__name__)
 app.secret_key = '#sigmarizz23#'
@@ -249,6 +250,41 @@ def logout():
     session.clear()
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
+
+@app.route('/add_random_todo', methods=["POST"])
+def add_random_todo():
+    if "user_id" not in session:
+        flash("Please log in to add a to-do.", "warning")
+        return redirect(url_for('login'))
+
+    random_todos = [
+        "Give someone a hug",
+        "Buy someone a coffee",
+        "Compliment a stranger",
+        "Write a thank you note",
+        "Help someone with a task",
+        "Donate to a charity",
+        "Call a friend or family member",
+        "Leave a positive review",
+        "Pick up litter",
+        "Smile at everyone you see"
+    ]
+    task_description = random.choice(random_todos)
+    due_date = datetime.now().date() + timedelta(days=1)
+    user_id = session["user_id"]
+
+    # Assuming "Personal" category exists and has id 1
+    category = db_session.query(Category).filter_by(name="Personal").first()
+    if not category:
+        flash("Personal category not found.", "error")
+        return redirect(url_for('dashboard'))
+
+    new_task = Task(description=task_description, user_id=user_id, completed=False, due_date=due_date, category=category)
+    db_session.add(new_task)
+    db_session.commit()
+
+    flash("Random To-Do added successfully!", "success")
+    return redirect(url_for('dashboard'))
 
 # Add favicon route
 @app.route('/favicon.ico')
