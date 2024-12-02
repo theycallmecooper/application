@@ -20,6 +20,9 @@
             min-height: 100%;
             background-color: cover;
             padding-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .container {
@@ -28,6 +31,13 @@
             border-radius: 10px;
             margin-top: 40px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 100%; /* Extend container to full width */
+            width: 100%;
+            margin: 0 auto; /* Center the container horizontally */
         }
 
         .nav-link {
@@ -39,12 +49,16 @@
         }
 
         footer {
+            width: 100%; /* Extend footer to full width */
+            left: 0;
+            right: 0;
             text-align: center;
             padding: 20px;
             background: rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             margin-top: 40px;
             box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: auto;
         }
 
         footer a {
@@ -59,8 +73,8 @@
         }
 
         .list-group-item {
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #333;
             margin-bottom: 10px;
             border-radius: 5px;
@@ -78,7 +92,7 @@
 
         .list-group-item.completed {
             text-decoration: line-through;
-            background-color: #d4edda;
+            background-color: rgba(255, 255, 255, 0.1);
             color: #155724;
         }
 
@@ -89,13 +103,34 @@
 
         .form-inline {
             margin-bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center elements horizontally */
         }
 
         .form-control {
             border-radius: 10px;
             padding: 12px;
             height: 50px; /* Match the height of the button */
-            width: 500px; /* Make the input bar longer */
+            width: 100%; /* Make the input bar take full width */
+            max-width: 100%; /* Extend input bar to full width */
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .form-control::placeholder {
+            color: #666;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 1);
+            color: #333;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
         }
 
         .btn-primary {
@@ -170,6 +205,8 @@
             border-radius: 10px;
             margin-top: 20px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 100%; /* Extend category binder to full width */
+            width: 100%;
         }
 
         .category-binder h3 {
@@ -188,6 +225,7 @@
             justify-content: space-between;
             align-items: center;
             transition: transform 0.3s;
+            width: 100%; /* Make list group items take full width */
         }
 
         .category-binder .list-group-item:hover {
@@ -298,6 +336,69 @@
             background-color: darkgrey;
             border-color: darkgrey;
         }
+
+        .card-header, .card-body {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .form-control::placeholder {
+            color: #666;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 1);
+            color: #333;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-primary {
+            background-color: #20c9c6;
+            border-color: #20c9c6;
+        }
+
+        .btn-primary:hover {
+            background-color: #198f85;
+            border-color: #198f85;
+        }
+
+        .row {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center elements horizontally */
+        }
+
+        .card {
+            margin: 0 auto;
+            width: 100%;
+            max-width: none;
+        }
+
+        .form-inline input,
+        .form-inline select {
+            width: 100%;
+            max-width: 100%; /* Extend form elements to full width */
+            margin-bottom: 10px; /* Add space between elements */
+        }
+
+        .list-group {
+            width: 100%;
+        }
+
+        .card.mb-4.mx-auto {
+            margin: 20px 0;
+            max-width: 100%; /* Extend cards to full width */
+        }
     </style>
 </head>
 <body>
@@ -313,19 +414,40 @@
         <!-- Dashboard Header -->
         <h1 class="text-center mb-4">Your To-Do List</h1>
 
-        <!-- Form to Add a New To-Do -->
-        <form action="{{ url_for('add_todo') }}" method="POST" class="form-inline justify-content-center mb-3">
-            <input type="text" name="task" placeholder="New To-Do" required class="form-control mr-2" style="width: 300px;" />
-            <input type="date" name="due_date" class="form-control mr-2" style="width: 200px;" />
-            <select name="category" class="form-control mr-2" style="width: 200px;">
-                <option value="">Select Category</option>
-                {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.name }}</option>
-                {% endfor %}
-            </select>
-            <textarea name="task_description" placeholder="Description" class="form-control mr-2" style="width: 300px;"></textarea>
-            <button type="submit" class="btn btn-primary" style="height: 50px;">Add</button>
-        </form>
+        <!-- Wrap the forms in a row -->
+        <div class="row">
+            <!-- Form to Add a New To-Do -->
+            <div class="col-md-6">
+                <div class="card mb-4 mx-auto" style="max-width: 600px;">
+                    <div class="card-header text-center">
+                        <h3>Add a New To-Do</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ url_for('add_todo') }}" method="POST">
+                            <div class="form-group">
+                                <label for="task">Task</label>
+                                <input type="text" name="task" id="task" placeholder="New To-Do" required class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label for="due_date">Due Date</label>
+                        <label for="category">Category</label>
+                        <select name="category" id="category" class="form-control">
+                            <option value="">Select Category</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task_description">Description</label>
+                        <textarea name="task_description" id="task_description" placeholder="Description" class="form-control"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Align Add and Delete Category Forms horizontally with Add To-Do form -->
         <div class="d-flex justify-content-center flex-wrap">
@@ -513,5 +635,5 @@
         });
     </script>
 </body>
-</html>
+</html> 
 
