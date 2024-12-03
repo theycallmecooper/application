@@ -93,6 +93,11 @@ def dashboard():
             badge_text = "No due date"
             is_overdue = False
             is_due_today = False
+
+        if task.completed:
+            badge_class = "badge-completed"
+            badge_text = "Completed"
+
         tasks_with_time_remaining.append({
             'id': task.id,
             'description': task.description,

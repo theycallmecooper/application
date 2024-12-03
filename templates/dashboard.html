@@ -538,9 +538,7 @@
                     <div>
                         <input type="checkbox" class="task-checkbox" {% if task.completed %}checked{% endif %} data-task-id="{{ task.id }}">
                         <span class="ml-2 task-title">{{ task.description }}</span>
-                        {% if task.due_date %}
                         <span class="badge {{ task.badge_class }}">{{ task.badge_text }}</span>
-                        {% endif %}
                         {% if task.brief_description %}
                         <br>
                         <small class="task-brief-description">{{ task.brief_description }}</small>
