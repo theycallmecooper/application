@@ -74,32 +74,38 @@ def dashboard():
         if task.due_date:
             delta = task.due_date - today
             if delta.days > 0:
-                time_remaining = f"In {delta.days} day{'s' if delta.days != 1 else ''}"
+                badge_class = "badge-upcoming"
+                badge_text = f"In {delta.days} day{'s' if delta.days != 1 else ''}"
                 is_overdue = False
                 is_due_today = False
             elif delta.days == 0:
-                time_remaining = "Due today"
+                badge_class = "badge-due-today"
+                badge_text = "Due today"
                 is_overdue = False
                 is_due_today = True
             else:
-                time_remaining = f"Overdue by {abs(delta.days)} day{'s' if abs(delta.days) != 1 else ''}"
+                badge_class = "badge-overdue"
+                badge_text = f"Overdue by {abs(delta.days)} day{'s' if abs(delta.days) != 1 else ''}"
                 is_overdue = True
                 is_due_today = False
         else:
-            time_remaining = None
+            badge_class = "badge-no-due"
+            badge_text = "No due date"
             is_overdue = False
             is_due_today = False
         tasks_with_time_remaining.append({
             'id': task.id,
             'description': task.description,
             'due_date': task.due_date,
-            'time_remaining': time_remaining,
+            'badge_class': badge_class,
+            'badge_text': badge_text,
             'is_overdue': is_overdue,
             'is_due_today': is_due_today,
             'completed': task.completed,
-            'category_id': task.category_id
+            'category_id': task.category_id,
+            'brief_description': task.brief_description
         })
-    return render_template('dashboard.html', tasks=tasks_with_time_remaining, categories=categories)
+    return render_template('dashboard.html', tasks=tasks_with_time_remaining, categories=categories, current_date=today)
 
 @app.route('/add_todo', methods=["POST"])
 def add_todo():
