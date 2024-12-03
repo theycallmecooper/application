@@ -319,8 +319,8 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: grey;
-            border-color: grey;
+            background-color: rgb(30, 235, 228);
+            border-color: rgb(29, 216, 216);
             color: white;
             border-radius: 50%;
             width: 50px;
@@ -333,8 +333,8 @@
         }
 
         .btn-random-todo:hover {
-            background-color: darkgrey;
-            border-color: darkgrey;
+            background-color: rgb(20, 181, 184);
+            border-color: rgb(16, 151, 163);
         }
 
         .card-header, .card-body {
@@ -412,11 +412,6 @@
     </style>
 </head>
 <body>
-    <!-- Random To-Do Button -->
-    <form action="{{ url_for('add_random_todo') }}" method="POST" class="form-inline">
-        <button type="submit" class="btn btn-random-todo">🎲</button>
-    </form>
-    
     <div class="container">
         <!-- Welcome Message -->
         <h2 class="text-center mb-4 welcome-message">Welcome, {{ session['username'] }}!</h2>
@@ -457,6 +452,9 @@
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">Add</button>
+                                <form action="{{ url_for('add_random_todo') }}" method="POST" class="d-inline-block">
+                                    <button type="submit" class="btn btn-random-todo ml-2">🎲</button>
+                                </form>
                             </div>
                         </form>
                     </div>
@@ -537,16 +535,19 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center {% if task.completed %}completed{% else %}pending{% endif %} {% if task.is_overdue and not task.completed %}overdue-task{% endif %}" data-task-id="{{ task.id }}">
                     <div>
                         <input type="checkbox" class="task-checkbox" {% if task.completed %}checked{% endif %} data-task-id="{{ task.id }}">
-                        <span class="ml-2 task-title">{{ task.description }}</span>
-                        <span class="badge {{ task.badge_class }}">{{ task.badge_text }}</span>
+                        <span class="ml-2 task-title" style="font-size: 1.2em;">{{ task.description }}</span>
+                        {% if task.due_date %}
+                        <small class="text-muted ml-2" style="font-size: 1.1em;">{{ task.due_date.strftime('%A, %B %d, %Y') }}</small>
+                        {% endif %}
+                        <span class="badge {{ task.badge_class }} ml-2" style="font-size: 1.1em;">{{ task.badge_text }}</span>
                         {% if task.brief_description %}
                         <br>
-                        <small class="task-brief-description">{{ task.brief_description }}</small>
+                        <small class="task-brief-description" style="font-size: 1.1em;">{{ task.brief_description }}</small>
                         {% endif %}
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-edit btn-sm edit-task" data-task-id="{{ task.id }}" data-task-description="{{ task.description }}" data-task-due-date="{{ task.due_date }}" data-task-category="{{ task.category_id }}" data-task-brief-description="{{ task.brief_description }}">Edit</button>
-                        <button type="button" class="btn btn-danger btn-sm delete-task">Delete</button>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-edit btn-sm mr-2 edit-task" style="border-radius: 20px;" data-task-id="{{ task.id }}" data-task-description="{{ task.description }}" data-task-due-date="{{ task.due_date }}" data-task-category="{{ task.category_id }}" data-task-brief-description="{{ task.brief_description }}">Edit</button>
+                        <button type="button" class="btn btn-danger btn-sm delete-task" style="border-radius: 20px;">Delete</button>
                     </div>
                 </li>
                 {% endfor %}
