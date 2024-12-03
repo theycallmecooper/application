@@ -279,8 +279,9 @@ def add_random_todo():
         "Call a friend or family member",
         "Leave a positive review",
         "Pick up litter",
-        "Smile at everyone you see"
-        "Get a girlfriend"
+        "Smile at everyone you see",
+        "Get a girlfriend",
+        "Take a harvard physics exam until you pass",
     ]
     task_description = random.choice(random_todos)
     due_date = datetime.now().date() + timedelta(days=1)
