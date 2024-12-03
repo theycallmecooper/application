@@ -452,15 +452,16 @@
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">Add</button>
-                                <form action="{{ url_for('add_random_todo') }}" method="POST" class="d-inline-block">
-                                    <button type="submit" class="btn btn-random-todo ml-2">🎲</button>
-                                </form>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Randomizer button -->
+        <form action="{{ url_for('add_random_todo') }}" method="POST" class="d-inline-block">
+            <button type="submit" class="btn btn-random-todo ml-2">🎲</button>
+        </form>
 
         <!-- Align Add and Delete Category Forms horizontally with Add To-Do form -->
         <div class="d-flex justify-content-center flex-wrap">
